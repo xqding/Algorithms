@@ -1,6 +1,10 @@
 all: main
 
+GCC = g++ -ggdb
 main: main.o
-	g++ main.o -o main
+	$(GCC) main.o -o main
 main.o: main.cpp
-	g++ -c main.cpp
+	$(GCC) -c main.cpp
+
+rm:
+	rm main main.o
