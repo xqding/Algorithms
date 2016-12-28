@@ -3,8 +3,9 @@
 
 #include <vector>
 #include <map>
+#include <set>
 
-void DFS_LoopFinishingTime(int numNodes,
+void DFS_LoopFinishingTime(std::set<int> idxNodes,
 			   std::map< int, std::vector<int> > &graph,
 			   std::vector<int> &sortedIdxNodes);
 void DFS_RecursionFinishingTime(int s, std::map< int, std::vector<int> > &graph,

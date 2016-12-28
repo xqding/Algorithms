@@ -3,37 +3,44 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 
 #include "DFS.h"
 
 int main(int argc, char** argv)
 {
+  if (argc == 1)
+  {
+    std::cout << "No inpu file specified." << std::endl;
+    return 1;
+  }
   // input file where the adjacency list representation of the graph is
   std::ifstream inFile(argv[1]);  
   if (!inFile.good())
   {
     std::cout << "Error in reading file: " << argv[1] << std::endl;
-    return 1;
+    return 2;
   }
 
   // read graph
   std::map< int, std::vector<int> > graph; // the original graph
   std::map< int, std::vector<int> > graphReverse; // the edge reversed graph
+  std::set<int> idxNodes;
   int tail, head;
-  int numNodes = 0;
   while (inFile >> tail >> head)
   {
     graph[tail].push_back(head);
     graphReverse[head].push_back(tail);
-    if (tail > numNodes) numNodes = tail;
-    if (head > numNodes) numNodes = head;
+    idxNodes.insert(tail);
+    idxNodes.insert(head);
   }
   inFile.close();
   
   // Depth First Search (DFS) on graphReverse for calculating finishing time
   std::vector<int> sortedIdxNodes; // the idx of nodes sorted by its finishing time
-  DFS_LoopFinishingTime(numNodes, graphReverse, sortedIdxNodes);  
+  DFS_LoopFinishingTime(idxNodes, graphReverse, sortedIdxNodes);  
 
+  
   // Depth First Search (DFS) on graph for assigning the strongly connected componenets
   std::map<int, int> leader;
   DFS_LoopAssignLeader(graph, sortedIdxNodes, leader);
